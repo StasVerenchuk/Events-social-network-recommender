@@ -3,7 +3,7 @@ import os
 import json
 from typing import Any
 
-def jead_json(filename: str) -> Any:
+def read_json(filename: str) -> Any:
     if not os.path.exists(filename):
         return{}
     with open(filename, "r", encoding="utf-8") as json_file:
