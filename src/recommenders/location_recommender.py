@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Literal
 
 import numpy as np
 from sklearn.neighbors import KernelDensity
@@ -7,7 +7,11 @@ from sklearn.neighbors import KernelDensity
 class LocationRecommender:
     """KDE-рекомендації за геолокацією користувача та його минулих подій."""
 
-    def __init__(self, kernel: str = "gaussian", bandwidth: float | None = None) -> None:
+    def __init__(
+        self,
+        kernel: str | Literal["gaussian", "tophat", "epanechnikov"] = "gaussian",
+        bandwidth: float | str = "scott",          # ←  зміна: 'scott' замість None
+    ) -> None:
         self.kernel = kernel
         self.bandwidth = bandwidth
         self.training_vecs: Dict[str, np.ndarray] = {}

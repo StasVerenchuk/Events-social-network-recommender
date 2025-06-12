@@ -1,4 +1,3 @@
-#!/usr/bin/env python3.10
 from __future__ import annotations
 
 import argparse
@@ -10,21 +9,20 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List
 
-from measurements import recommendation_measurement               # noqa: F401
-from partition import TRAIN_INTERVAL, get_timestamps
-from preprocessing import (
+from .measurements import recommendation_measurement               # noqa: F401
+from .partition import TRAIN_INTERVAL, get_timestamps, get_partitioned_repo_wrapper
+from .preprocessing import (
     load_events,
     load_groups,
     load_members,
     load_rsvps,
 )
-from recommenders.content_recommender import ContentRecommender
-from recommenders.group_frequency.grp_freq_recommender import (
+from .recommenders.content_recommender import ContentRecommender
+from .recommenders.grp_freq_recommender import (
     GroupFrequencyRecommender,
 )
-from recommenders.location_recommender import LocationRecommender
-from recommenders.temporal.time_recommender import TimeRecommender    # noqa: F401
-from scripts.hybrid_recommender import LearningToRank                 # noqa: F401
+from .recommenders.location_recommender import LocationRecommender   # noqa: F401
+from .recommenders.hybrid_recommender import LearningToRank                 # noqa: F401
 
 # ────────────────────────────────────────────────────────────────────
 # 1. Базові шляхи
@@ -50,10 +48,14 @@ def run_local_crawler() -> None:
         )
 
 
-def run_best_user_script(n_users: int) -> None:
-    """Створює файли `*_best_users_*.txt` у scripts/."""
+def run_best_user_script(n_members: int) -> None:
+    """Створює TXT-файли з топ-користувачами."""
     subprocess.run(
-        [sys.executable, SCRIPTS_DIR / "script.py", "--number", str(n_users)],
+        [
+            sys.executable,
+            "-m", "src.scripts.script",   # ← головна зміна
+            "--number", str(n_members),
+        ],
         check=True,
     )
 

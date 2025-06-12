@@ -7,7 +7,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import DefaultDict, Dict, List
 
-from partition import TRAIN_INTERVAL, get_timestamps
+from src.partition import TRAIN_INTERVAL, get_timestamps
 
 # ────────────────────────────────────────────────────────────────────
 # 1. Шляхи
@@ -101,3 +101,16 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# (необов’язковий «запобіжник»)
+if __name__ == "__main__" and (__package__ is None or __package__ == ""):
+    import sys, textwrap
+    msg = textwrap.dedent(
+        """
+        Запускайте цей скрипт пакетом:
+
+            python -m src.scripts.script --number 100
+        """
+    )
+    print(msg, file=sys.stderr)
+    sys.exit(1)
